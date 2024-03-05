@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://srcw.net/"
   spec.license       = "MIT"
 
-  spec.metadata["allowed_push_host"] = ""
+#  spec.metadata["allowed_push_host"] = ""
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
