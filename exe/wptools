@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "wptools"
+
+STDOUT.sync = true
+Wptools::Command.run(ARGV)
+
