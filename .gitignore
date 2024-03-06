@@ -12,6 +12,8 @@
 /config/*
 /data/*
 !/config/config_sample.yml
+test*.sh
+/exe/test*
 
 
 

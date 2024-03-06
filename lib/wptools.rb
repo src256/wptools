@@ -1,6 +1,9 @@
 # coding: utf-8
 require "wptools/version"
 require "wptools/wp_post"
+require "wptools/wp_term_relationship"
+require "wptools/wp_term_taxonomy"
+require "wptools/wp_term"
 require 'yaml'
 require 'optparse'
 require 'csv'
@@ -54,8 +57,10 @@ module Wptools
       end
       opt.on('-v', '--verbose', 'Verbose message') {|v| opts[:v] = v}
       opt.on('-n', '--dry-run', 'Message only') {|v| opts[:n] = v}
-      opt.on('-l NUM', '--list NUM', 'List posts') {|v| opts[:l] = v.to_i}
-      opt.on('-b DATAFILE', '--buzz DATAFILE', 'Buzz posts') {|v| opts[:b] = v }
+      commands = ['list', 'buzz', 'none']
+      opt.on('-c COMMAND', '--command=COMMAND', commands, commands.join('|')) {|v| opts[:c] = v}
+      opt.on('-l NUM', '--limit NUM', 'Limit number') {|v| opts[:l] = v.to_i}
+      opt.on('-d DATAFILE', '--data DATAFILE', 'CSV Datafile') {|v| opts[:d] = v }
       opt.parse!(argv)
       if argv.empty?
         puts opt.help
@@ -75,15 +80,15 @@ module Wptools
     end
 
     def run
-      if @opts[:l]
+      if @opts[:c] == 'list'
         list(@opts[:l])
-      elsif @opts[:b]
-        buzz(@opts[:b])
+      elsif @opts[:c] == 'buzz'
+        buzz(@opts[:d])
+      elsif @opts[:c] == 'none'
       end
     end
 
     def list(num)
-      p num
       WpPost.published_posts.order(post_date: "DESC").limit(num).each do | post|
         print "#{post.id} #{post.post_type} #{post.post_date_str} #{post.post_title} #{post.post_name}\n"
       end      
